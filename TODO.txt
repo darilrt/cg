@@ -1,0 +1,1 @@
+Chekear consumo de memoria de components/Sprite

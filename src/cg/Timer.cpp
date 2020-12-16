@@ -1,0 +1,1 @@
+#include "cg/Timer.hpp"namespace cg {	namespace time {		using Clock = std::chrono::high_resolution_clock;		Timer::Timer() {			start = Clock::now();		}		void Timer::restart() {			start = Clock::now();		}		float Timer::current() {			auto now = Clock::now();						return std::chrono::duration_cast<std::chrono::microseconds>(now - start).count() / 1000000.0;		}	}}
