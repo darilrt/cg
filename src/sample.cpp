@@ -188,9 +188,9 @@ public:
 		
 	}
 	
-	void render() {
-		cg::debug::
-	}
+	// void render() {
+		// cg::debug::
+	// }
 	
 private:
 	Player *player;
