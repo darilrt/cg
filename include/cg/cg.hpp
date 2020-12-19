@@ -10,7 +10,6 @@
 #include "core/Camera.hpp"
 #include "core/ParticleSystem.hpp"
 // #include "core/socket.hpp" temporalmente no
-// #include "core/box2d.hpp" no existe
 
 // namespaces
 #include "math.hpp"
@@ -19,6 +18,7 @@
 #include "debug.hpp"
 #include "shader.hpp"
 #include "random.hpp"
+#include "physics.hpp"
 
 // enums
 #include "key_code.hpp"
@@ -32,6 +32,7 @@
 // components
 #include "components/Sprite.hpp"
 #include "components/ParticleEmitter.hpp"
+#include "components/BoxCollider2D.hpp"
 
 namespace cg {
 	void run(cg::Scene *scene);

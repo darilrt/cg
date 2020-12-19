@@ -1,22 +1,8 @@
 // Cagada de Engine (CG) beta v0.0.9
+// #define COLLISION_DEBUG
+
 #include "cg/cg.hpp"
 #include "cmath"
-
-// class Collider : public cg::Component {
-// public:
-	// void start() {
-		
-	// }
-	
-	// void update() {
-	// }
-	
-	// void render() {
-	// }
-
-// private:
-	
-// }
 
 class Planet : public cg::GameObject {
 public:
@@ -70,6 +56,7 @@ public:
 private:
 	cg::Sprite *sprite;
 	cg::ParticleEmitter *particles;
+	
 };
 
 class Player : public cg::GameObject {
@@ -174,8 +161,8 @@ public:
 		};
 		
 		regist(player = new Player());
-		
 		regist(planet = new Planet());
+		regist(r1 = new cg::BoxCollider2D({0, 0}, {100, 100}));
 	}
 	
 	void update() {
@@ -185,22 +172,24 @@ public:
 			10 * cg::time::delta_time
 		);
 		
-		
+		r1->position = player->position.get<VEC_XY>();
+		r1->rotation = atan2(player->direction.y, player->direction.x) * TO_DEGREES;
 	}
 	
-	// void render() {
-		// cg::debug::
-	// }
+	void render() {
+		r1->debug();
+	}
 	
 private:
-	Player *player;
-	cg::ParticleEmitter *stars;
-	
 	Planet *planet;
+	Player *player;
+	
+	cg::ParticleEmitter *stars;
+	cg::BoxCollider2D *r1;	
 };
 
 int main(i32 argc, i8* argv[]) {
-	cg::display::init({1920, 1080});
+	cg::display::init(Vec2<i32>(1920, 1080));
 	cg::display::title("Hello, CG!");
 	cg::display::background({0.05, 0.05, 0.1, 1});
 	

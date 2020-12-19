@@ -7,8 +7,6 @@
 #include "../core/Shader.hpp"
 #include "../core/MeshRenderer.hpp"
 
-#include <iostream>
-
 namespace cg {
 	class Sprite : public cg::Component {
 	public:

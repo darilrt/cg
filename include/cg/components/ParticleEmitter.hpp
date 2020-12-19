@@ -6,7 +6,6 @@
 #include "../core/ParticleSystem.hpp"
 #include "../Texture.hpp"
 
-#include <iostream>
 #include <functional>
 
 

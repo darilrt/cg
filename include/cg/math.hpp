@@ -43,7 +43,7 @@ namespace cg {
 		}
 		
 		template<typename T>
-		inline T& clamp(const T& v, const T& lo, const T& hi) {
+		inline const T& clamp(const T& v, const T& lo, const T& hi) {
 			return (v < lo) ? lo : (hi < v) ? hi : v;
 		}
 		
@@ -51,7 +51,17 @@ namespace cg {
 		inline T lerp(const T& i, const T& f, const f32& x) {
 			return i + (f - i) * x;
 		}
-
+		
+		template <class T>
+		const T& min(const T& a, const T& b) {
+			return !(b < a) ? a : b;
+		}
+		
+		template <class T>
+		const T& max(const T& a, const T& b) {
+			return (a < b) ? b : a;
+		}
+		
 		template<typename T>
 		class Vec2 {
 		public:
