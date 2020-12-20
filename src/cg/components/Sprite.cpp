@@ -8,6 +8,7 @@ namespace cg {
 	
 	Sprite::Sprite(const std::string texture_path) {
 		texture = new cg::Texture(texture_path);
+		is_global = false;
 	}
 
 	Sprite::~Sprite() {
@@ -76,21 +77,23 @@ namespace cg {
 		mesh_renderer->rotation = rotation;
 		
 		glPushMatrix();
-		glTranslatef(
-			game_object->position.x,
-			game_object->position.y,
-			game_object->position.z
-		);
-		
-		glRotatef(game_object->rotation.x, 1, 0, 0);
-		glRotatef(game_object->rotation.y, 0, 1, 0);
-		glRotatef(game_object->rotation.z, 0, 0, 1);
-		
-		glScalef(
-			game_object->scale.x,
-			game_object->scale.y,
-			game_object->scale.z
-		);
+		if (!is_global) {
+			glTranslatef(
+				game_object->position.x,
+				game_object->position.y,
+				game_object->position.z
+			);
+			
+			glRotatef(game_object->rotation.x, 1, 0, 0);
+			glRotatef(game_object->rotation.y, 0, 1, 0);
+			glRotatef(game_object->rotation.z, 0, 0, 1);
+			
+			glScalef(
+				game_object->scale.x,
+				game_object->scale.y,
+				game_object->scale.z
+			);
+		}
 		
 		mesh_renderer->render();
 		glPopMatrix();

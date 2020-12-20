@@ -1,10 +1,13 @@
-
-#include "cg/Texture.hpp"
-
 #include <string>
 #include <GL/gl.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+
+#include "cg/math.hpp"
+#include "cg/Texture.hpp"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <vendor/stb_image.h>
+
+using namespace cg::math;
 
 namespace cg {
 	Texture::Texture() {}
@@ -16,26 +19,21 @@ namespace cg {
 	Texture::Texture(const std::string file_path) {
 		GLuint tex;
 		GLuint format;
-
-		SDL_Surface* image = IMG_Load(file_path.c_str());
 		
-		if (image == NULL)
-			printf("SDL_Error: %s\n", SDL_GetError());
-
-		if (image->format->BytesPerPixel == 4)
-			if (image->format->Bmask == 0x000000ff)
-				format = GL_RGB;
-			else
-				format = GL_RGBA;
-
-		else if (image->format->BytesPerPixel == 3)
-			if (image->format->Bmask == 0x000000ff)
-				format = GL_RGB;
-			else
-				format = GL_RGB;
-
-		else
-			printf("warning: the image is not truecolor..  this will probably break %i\n", image->format->BytesPerPixel);
+		int w, h, n;
+		u8 *image = stbi_load(&file_path[0], &w, &h, &n, 0);
+		
+		if (image == nullptr) {
+			printf("stbi_load error on load image");
+			return;
+		}
+		
+		switch (n) {
+			case 1: /* format = GL_GRAY; */ break;
+			case 2: /* format = GL_GRAY; */ break;
+			case 3: format = GL_RGB; break;
+			case 4: format = GL_RGBA; break;
+		}
 
 		glGenTextures(1, &tex);
 		glBindTexture(GL_TEXTURE_2D, tex);
@@ -44,13 +42,15 @@ namespace cg {
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, image->format->BytesPerPixel, image->w, image->h, 0, format, GL_UNSIGNED_BYTE, image->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, n, w, h, 0, format, GL_UNSIGNED_BYTE, image);
 
-		SDL_FreeSurface(image);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
+		delete image;
 
 		this->texture = tex;
-		this->size.x = image->w;
-		this->size.y = image->h;
+		this->size.x = w;
+		this->size.y = h;
 	}
 
 	Texture* Texture::load(const std::string file_path) {

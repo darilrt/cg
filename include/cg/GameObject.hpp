@@ -2,13 +2,14 @@
 #define CG_GAMEOBJECT_H
 
 #include "math.hpp"
-#include "Component.hpp"
+// #include "Component.hpp"
 
 #include <vector>
 
 using namespace cg::math;
 
 namespace cg {
+	class Component;
 	class Scene;
 	
 	class GameObject {

@@ -12,18 +12,18 @@ void cg::run(cg::Scene *scene) {
 		obj->start();
 		
 		for (cg::Component* cmp : obj->components) {
-			cmp->start();
+			if (cmp->is_enable) cmp->start();
 		}
 	}
 	
 	for (cg::Component* cmp : scene->components) {
-		cmp->start();
+		if (cmp->is_enable) cmp->start();
 	}
 	
 	while (cg::display::window->update()) {
 		cg::time::fps = cg::display::window->fps();
-		cg::time::delta_time = cg::display::window->delta_time;
-		cg::time::life_time = cg::display::window->life_time;
+		cg::time::delta_time = cg::display::window->delta_time; // probar cambiarlo a referencia
+		cg::time::life_time = cg::display::window->life_time; // probar cambiarlo a referencia
 		
 		// Update ------------------------------------------
 		scene->update();
@@ -31,12 +31,12 @@ void cg::run(cg::Scene *scene) {
 			obj->update();
 			
 			for (cg::Component* cmp : obj->components) {
-				cmp->update();
+				if (cmp->is_enable) cmp->update();
 			}
 		}
-	
+		
 		for (cg::Component* cmp : scene->components) {
-			cmp->update();
+			if (cmp->is_enable) cmp->update();
 		}
 		
 		// Render ------------------------------------------
@@ -44,6 +44,7 @@ void cg::run(cg::Scene *scene) {
 		
 		scene->camera->use();
 		scene->render();
+		
 		for (cg::GameObject* obj : scene->game_objects) {
 			obj->render();
 			
@@ -53,7 +54,7 @@ void cg::run(cg::Scene *scene) {
 		}
 		
 		for (cg::Component* cmp : scene->components) {
-			cmp->render();
+			if (cmp->is_enable) cmp->render();
 		}
 	}
 }

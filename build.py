@@ -23,7 +23,6 @@ LIBS = [
     "mingw32",
     "SDL2main",
     "SDL2",
-    "SDL2_image",
     "ws2_32",
 ]
 

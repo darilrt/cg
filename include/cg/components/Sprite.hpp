@@ -10,6 +10,8 @@
 namespace cg {
 	class Sprite : public cg::Component {
 	public:
+		bool is_global;
+	
 		cg::Texture* texture;
 		cg::core::Shader *shader = nullptr;
 		cg::core::Material *material = nullptr;
