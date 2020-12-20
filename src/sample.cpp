@@ -1,5 +1,4 @@
 // Cagada de Engine (CG) beta v0.0.9
-// #define COLLISION_DEBUG
 
 #include "cg/cg.hpp"
 #include "cmath"
@@ -8,7 +7,7 @@ class Planet : public cg::GameObject {
 public:
 	void start() {
 		regist(particles = new cg::ParticleEmitter());
-		particles->max = 1000;
+		particles->max = 10;
 		particles->rate = 10000;
 		particles->is_global = true;
 		particles->is_emitting = true;
@@ -16,14 +15,13 @@ public:
 		particles->spawn_func = [this](cg::core::Particle &p) {
 			p.max_life_time = 5;
 			
-			f32 d = cg::random(100, 150);
-			p.position = position +
-				Vec3<f32>(d, 0, 0).rot({0, 0, cg::random(0, 360)})
+			f32 d = cg::random(100, 400);
+			p.position = position + Vec3<f32>(d, 0, 0).rot({0, 0, cg::random(0, 360, 1)})
 			;
 			p.position.z = 0.5;
 			
 			Vec3<f32> dir = (position - p.position);
-			p.speed = Vec3<f32>(dir.y, dir.x * -1, 0).unlit() * sqrt(100 / d) * 100;
+			p.speed = Vec3<f32>(dir.y, -dir.x, 0).unlit() * sqrt(100 / d) * 100;
 			p.size = cg::random(2, 5);
 			
 			p.color = {.8, .8, .8, 1};
@@ -47,22 +45,23 @@ public:
 		regist(sprite = new cg::Sprite("assets/planet.png"));
 		sprite->scale = {3, 3, 0};
 		
+		regist(circle = new cg::CircleCollider({0, 0}, 67.5));
+		
 		position.z = 0;
 	}
 	
-	void update() {
-	}
-
 private:
 	cg::Sprite *sprite;
 	cg::ParticleEmitter *particles;
-	
+	cg::CircleCollider *circle;
 };
 
 class Player : public cg::GameObject {
 public:
 	Vec3<f32> direction = {0, 0, 0};
-	f32 speed = 1000;
+	f32 max_speed = 1000;
+	f32 aceleration = 10;
+	f32 speed = 0;
 	
 	void start() {
 		regist(particles = new cg::ParticleEmitter());
@@ -97,6 +96,8 @@ public:
 		sprite->scale = {3, 3, 0};
 		sprite->position = {22.5, 0, 0};
 		
+		regist(box_collider = new cg::BoxCollider2D({22.5, 0}, {45, 21}));
+		
 		position.z = 1;
 	}
 	
@@ -106,6 +107,9 @@ public:
 		if (particles->is_emitting) {
 			auto diff = scene->camera->screen_to_world(cg::input::mouse_position()) - position.get<VEC_XY>();
 			particles->is_emitting = particles->is_emitting && diff.length() > 45;
+			
+			speed += diff.length() * diff.length() * cg::time::delta_time * aceleration;
+			speed = clamp(speed, .0f, max_speed);
 			
 			if (particles->is_emitting) {
 				Vec3<f32> new_dir = Vec3<f32>(diff, 0).unlit();
@@ -117,11 +121,15 @@ public:
 				if (l) rotation.z = atan2(direction.y, direction.x) * TO_DEGREES;
 			}
 		}
+		else {
+			speed = 0;
+		}
 	}
-
+	
 private:
 	cg::Sprite *sprite;
 	cg::ParticleEmitter *particles;
+	cg::BoxCollider2D *box_collider;
 };
 
 class CustomScene : public cg::Scene {
@@ -162,7 +170,6 @@ public:
 		
 		regist(player = new Player());
 		regist(planet = new Planet());
-		regist(r1 = new cg::BoxCollider2D({0, 0}, {100, 100}));
 	}
 	
 	void update() {
@@ -172,12 +179,7 @@ public:
 			10 * cg::time::delta_time
 		);
 		
-		r1->position = player->position.get<VEC_XY>();
-		r1->rotation = atan2(player->direction.y, player->direction.x) * TO_DEGREES;
-	}
-	
-	void render() {
-		r1->debug();
+		cg::display::title(std::to_string(cg::time::fps));
 	}
 	
 private:
@@ -185,12 +187,10 @@ private:
 	Player *player;
 	
 	cg::ParticleEmitter *stars;
-	cg::BoxCollider2D *r1;	
 };
 
 int main(i32 argc, i8* argv[]) {
-	cg::display::init(Vec2<i32>(1920, 1080));
-	cg::display::title("Hello, CG!");
+	cg::display::init(Vec2<i32>(1920 / 1.5, 1080 / 1.5));
 	cg::display::background({0.05, 0.05, 0.1, 1});
 	
 	cg::run(new CustomScene());

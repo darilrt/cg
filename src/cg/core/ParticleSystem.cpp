@@ -47,7 +47,7 @@ namespace cg {
 			
 			find_unused();
 			
-			for (int i=last_used; i < last_used + new_particles && i < MAX_PARTICLES; i++) {
+			for (int i=last_used; i < last_used + new_particles && i < max; i++) {
 				if (particles[i].life_time >= particles[i].max_life_time) {
 					particles[i].life_time = 0;
 					spawn_func(particles[i]);

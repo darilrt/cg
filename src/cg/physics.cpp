@@ -1,4 +1,5 @@
 #include "cg/physics.hpp"
+#include "cg/debug.hpp"
 
 namespace cg {
 	namespace physics {
@@ -20,6 +21,22 @@ namespace cg {
 		Rect2D::Rect2D() {
 			position = 0;
 			size = 0;
+		}
+		
+		bool Rect2D::collide(Circle &c) {
+			if ((this->position - c.position).length() < c.radius) {
+				return true;
+			}
+			
+			Vec2<f32> r_p = (position - c.position).rot(-rotation);
+			
+			Vec2<f32> s = size / 2;
+			Vec2<f32> p1 = r_p - s;
+			Vec2<f32> p2 = r_p + s;
+			
+			Vec2<f32> c_(clamp(.0f, p1.x, p2.x), clamp(.0f, p1.y, p2.y));
+			
+			return !(c_.length() > c.radius);
 		}
 		
 		bool Rect2D::collide(Rect2D &r) {
@@ -102,6 +119,23 @@ namespace cg {
 			
 			f32 pp = p.dot(axis);
 			return (!(min_r1 > pp)) && (!(max_r1 < pp));
+		}
+		
+		Circle::Circle() {
+			position = 0;
+			radius = 0;
+		}
+		
+		bool Circle::collide(Circle &c) {
+			return (position - c.position).length() < radius + c.radius;
+		}
+		
+		bool Circle::collide(Rect2D &r) {
+			return r.collide(*this);
+		}
+		
+		bool Circle::collide(Vec2<f32> &p) {
+			return (position - p).length() < radius;
 		}
 	}
 }

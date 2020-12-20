@@ -22,6 +22,8 @@ namespace cg {
 		private:
 		};
 		
+		class Circle;
+		
 		class Rect2D {
 		public:
 			Vec2<f32> position,
@@ -30,6 +32,7 @@ namespace cg {
 			f32 rotation = 0;
 			
 			Rect2D();
+			bool collide(Circle &circle);
 			bool collide(Rect2D &rect);
 			bool collide(Vec2<f32> &p);
 			
@@ -40,6 +43,17 @@ namespace cg {
 		private:
 			bool _collide_in_axis_sat(Vec2<f32>& axis, cg::physics::Rect2D& r);
 			bool _collide_in_axis_sat(Vec2<f32>& axis, Vec2<f32>& p);
+		};
+		
+		class Circle {
+		public:
+			Vec2<f32> position;
+			f32 radius;
+			
+			Circle();
+			bool collide(Circle &circle);
+			bool collide(Rect2D &rect);
+			bool collide(Vec2<f32> &p);
 		};
 	}
 }

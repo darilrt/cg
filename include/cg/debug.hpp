@@ -16,6 +16,7 @@ namespace cg {
 		void rect(Vec3<float> color, Vec2<float> position, Vec2<float> size, bool stroke=false);
 		void points(Vec3<float> color, std::vector<Vec2<float>> points);
 		void polygon(Vec3<float> color, std::vector<Vec2<float>> points, bool stroke=false);
+		void circle(Vec3<float> color, Vec2<float> position, float radius, u32 steps=360, bool stroke=false);
 	}
 
 	inline std::string _to_string(std::string v) {return v;}

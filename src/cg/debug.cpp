@@ -62,5 +62,14 @@ namespace cg {
 			glEnd();
 			glEnable(GL_TEXTURE_2D);
 		}
+		
+		void circle(Vec3<float> color, Vec2<float> position, float radius, u32 steps, bool stroke) {
+			std::vector<Vec2<f32>> points;
+			for (int i=0; i < 360; i += 360 / steps) {
+				points.push_back(Vec2<f32>(radius, 0).rot(i) + position);
+			}
+			
+			polygon(color, points, stroke);
+		}
 	}
 }

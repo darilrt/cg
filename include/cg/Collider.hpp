@@ -9,7 +9,7 @@ namespace cg {
 	public:
 	
 	private:
-		virtual cg::physics::Rect2D* _get_bounding_box() {return nullptr;};
+		virtual void _get_bounding_box(cg::physics::Rect2D &r) {};
 		
 	protected:
 		bool is_static;

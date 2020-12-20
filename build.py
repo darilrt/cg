@@ -12,6 +12,7 @@ OPTIONS = [
     "-L./lib/",
     "-DGLEW_STATIC",
     "-std=c++17",
+    # "-O3",
     # "-mwindows"
 ]
 

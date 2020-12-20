@@ -84,6 +84,8 @@ namespace cg {
 			cg::time::Timer _lifetimer;
 			
 			bool _closed;
+			f32 fps_avg;
+			f32 fps_count;
 		};
 	}
 }

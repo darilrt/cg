@@ -33,6 +33,7 @@
 #include "components/Sprite.hpp"
 #include "components/ParticleEmitter.hpp"
 #include "components/BoxCollider2D.hpp"
+#include "components/CircleCollider.hpp"
 
 namespace cg {
 	void run(cg::Scene *scene);

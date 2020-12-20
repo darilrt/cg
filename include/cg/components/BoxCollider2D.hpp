@@ -3,13 +3,14 @@
 
 #include "../math.hpp"
 #include "../physics.hpp"
-#include "../Collider.hpp"
 #include "../debug.hpp"
+#include "../Collider.hpp"
+#include "../GameObject.hpp"
 
 namespace cg {
 	class BoxCollider2D : public Collider {
 	public:
-		Vec2<f32> position;
+		Vec2<f32> position, size;
 		f32 rotation;
 		
 		void debug();
@@ -20,7 +21,7 @@ namespace cg {
 	private:
 		cg::physics::Rect2D rect;
 		
-		cg::physics::Rect2D* _get_bounding_box();
+		void _get_bounding_box(cg::physics::Rect2D &r);
 	};
 }
 
