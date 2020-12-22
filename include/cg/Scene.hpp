@@ -27,6 +27,7 @@ namespace cg {
 		std::vector<Component*> components;
 		
 		friend void run(Scene*);
+		friend void destroy(GameObject*);
 	};
 }
 

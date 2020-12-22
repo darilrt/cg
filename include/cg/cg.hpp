@@ -35,8 +35,22 @@
 #include "components/BoxCollider2D.hpp"
 #include "components/CircleCollider.hpp"
 
+#include <algorithm>
+
 namespace cg {
+	extern cg::Scene *scene;
+	
 	void run(cg::Scene *scene);
+	
+	template<typename T>
+	T* instance() {
+		T* a = new T;
+		cg::scene->regist((GameObject*) a);
+		
+		return a;
+	}
+	
+	void destroy(GameObject *go);
 }
 
 #endif // CG_H

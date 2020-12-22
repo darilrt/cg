@@ -1,6 +1,10 @@
 #include "cg/cg.hpp"
 
+cg::Scene *cg::scene = nullptr;
+
 void cg::run(cg::Scene *scene) {
+	cg::scene = scene;
+	
 	// Check window was intialized ---------------------
 	if (cg::display::window == nullptr) {
 		cg::display::init({800, 600});
@@ -57,4 +61,15 @@ void cg::run(cg::Scene *scene) {
 			if (cmp->is_enable) cmp->render();
 		}
 	}
+}
+
+void cg::destroy(GameObject *go) {
+	scene->game_objects.erase(
+		std::remove_if(scene->game_objects.begin(), scene->game_objects.end(),
+			[&go](GameObject* e) {
+				return e == go;
+			}),
+		scene->game_objects.end());
+	
+	delete go;
 }
