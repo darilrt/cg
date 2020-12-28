@@ -6,6 +6,7 @@
 #include "Component.hpp"
 
 #include <vector>
+#include <list>
 
 namespace cg {
 	class Scene {
@@ -23,7 +24,8 @@ namespace cg {
 		~Scene();
 		
 	private:
-		std::vector<GameObject*> game_objects;
+		std::list<GameObject*> go_wait_list;
+		std::list<GameObject*> game_objects;
 		std::vector<Component*> components;
 		
 		friend void run(Scene*);

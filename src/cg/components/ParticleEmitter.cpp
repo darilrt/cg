@@ -8,17 +8,23 @@
 
 namespace cg {
 	ParticleEmitter::ParticleEmitter() {
-			max = MAX_PARTICLES;
-		}
+		particle = new cg::core::ParticleSystem();
+		max = MAX_PARTICLES;
+	}
 	
 	ParticleEmitter::ParticleEmitter(const std::string texture_path) {
+		particle = new cg::core::ParticleSystem();
 		texture = new cg::Texture(texture_path);
-			max = MAX_PARTICLES;
+		max = MAX_PARTICLES;
+	}
+
+	ParticleEmitter::~ParticleEmitter() {
+		delete particle->material;
+		delete particle->mesh;
+		delete particle;
 	}
 	
 	void ParticleEmitter::start() {
-		particle = new cg::core::ParticleSystem();
-		
 		if (particle->shader == nullptr) {
 			if ((particle->shader = cg::shader::get("particle")) == nullptr) {
 				particle->shader = cg::shader::load(
@@ -104,10 +110,5 @@ namespace cg {
 		
 		particle->render();
 		glPopMatrix();
-	}
-
-	ParticleEmitter::~ParticleEmitter() {
-		delete particle->mesh;
-		delete particle;
 	}
 }

@@ -9,7 +9,7 @@ namespace cg {
 	
 	void Scene::regist(cg::GameObject* object) {
 		object->scene = this;
-		game_objects.push_back(object);
+		go_wait_list.push_back(object);
 	}
 	
 	void Scene::regist(cg::Component* object) {

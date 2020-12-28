@@ -30,8 +30,9 @@ namespace cg {
 		ParticleEmitter(const std::string texture_path);
 		~ParticleEmitter();
 		
-	private:
 		cg::core::ParticleSystem *particle;
+		
+	private:
 	};
 
 }

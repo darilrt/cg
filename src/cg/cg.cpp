@@ -25,6 +25,22 @@ void cg::run(cg::Scene *scene) {
 	}
 	
 	while (cg::display::window->update()) {
+		for (cg::GameObject* obj : scene->go_wait_list) {
+			obj->start();
+			
+			for (cg::Component* cmp : obj->components) {
+				if (cmp->is_enable) cmp->start();
+			}
+		}
+		
+		scene->game_objects.insert(
+			scene->game_objects.end(),
+			scene->go_wait_list.begin(),
+			scene->go_wait_list.end()
+		);
+		
+		scene->go_wait_list.clear();
+		
 		cg::time::fps = cg::display::window->fps();
 		cg::time::delta_time = cg::display::window->delta_time; // probar cambiarlo a referencia
 		cg::time::life_time = cg::display::window->life_time; // probar cambiarlo a referencia
@@ -32,11 +48,11 @@ void cg::run(cg::Scene *scene) {
 		// Update ------------------------------------------
 		scene->update();
 		for (cg::GameObject* obj : scene->game_objects) {
-			obj->update();
-			
 			for (cg::Component* cmp : obj->components) {
 				if (cmp->is_enable) cmp->update();
 			}
+			
+			obj->update();
 		}
 		
 		for (cg::Component* cmp : scene->components) {
@@ -50,11 +66,11 @@ void cg::run(cg::Scene *scene) {
 		scene->render();
 		
 		for (cg::GameObject* obj : scene->game_objects) {
-			obj->render();
-			
 			for (cg::Component* cmp : obj->components) {
 				cmp->render();
 			}
+			
+			obj->render();
 		}
 		
 		for (cg::Component* cmp : scene->components) {

@@ -8,12 +8,20 @@ namespace cg {
 	
 	Sprite::Sprite(const std::string texture_path) {
 		texture = new cg::Texture(texture_path);
+		texture_d = true;
+		is_global = false;
+	}
+	
+	Sprite::Sprite(cg::Texture* _texture) {
+		texture = _texture;
+		texture_d = false;
 		is_global = false;
 	}
 
 	Sprite::~Sprite() {
-		delete texture;
+		if (texture_d) delete texture;;
 		delete material;
+		delete mesh_renderer->mesh;
 		delete mesh_renderer;
 	}
 	
@@ -78,10 +86,12 @@ namespace cg {
 		
 		glPushMatrix();
 		if (!is_global) {
+			Vec3<f32> pos = game_object->world_position();
+			
 			glTranslatef(
-				game_object->position.x,
-				game_object->position.y,
-				game_object->position.z
+				pos.x,
+				pos.y,
+				pos.z
 			);
 			
 			glRotatef(game_object->rotation.x, 1, 0, 0);

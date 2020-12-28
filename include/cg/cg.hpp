@@ -22,6 +22,7 @@
 
 // enums
 #include "key_code.hpp"
+#include "mouse.hpp"
 
 // classes
 #include "Texture.hpp"
@@ -43,10 +44,17 @@ namespace cg {
 	void run(cg::Scene *scene);
 	
 	template<typename T>
-	T* instance() {
-		T* a = new T;
+	T* instantiate() {
+		T* a = new T();
 		cg::scene->regist((GameObject*) a);
 		
+		return a;
+	}
+	
+	template<typename T>
+	T* instantiate(GameObject* parent) {
+		T* a = instantiate<T>();
+		parent->regist(a);
 		return a;
 	}
 	

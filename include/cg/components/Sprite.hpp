@@ -22,10 +22,14 @@ namespace cg {
 		
 		Sprite();
 		Sprite(const std::string texture_path);
+		Sprite(cg::Texture* texture);
 		~Sprite();
 		
 		void start();
 		void render();
+		
+	private:
+		bool texture_d;
 	};
 }
 

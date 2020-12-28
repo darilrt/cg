@@ -2,7 +2,7 @@
 #define CG_GAMEOBJECT_H
 
 #include "math.hpp"
-// #include "Component.hpp"
+#include "debug.hpp"
 
 #include <vector>
 
@@ -14,7 +14,9 @@ namespace cg {
 	
 	class GameObject {
 	public:
+		GameObject *parent = nullptr;
 		Scene *scene;
+		
 		Vec3<f32> position = {0, 0, 0},
 				  rotation = {0, 0, 0},
 				  scale = {1, 1, 1};
@@ -22,8 +24,11 @@ namespace cg {
 		virtual void start() {};
 		virtual void update() {};
 		virtual void render() {};
-	
+		
+		void regist(GameObject*);
 		void regist(Component*);
+		
+		Vec3<f32> world_position();
 		
 		~GameObject();
 	

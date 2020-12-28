@@ -8,7 +8,7 @@
 
 #include <functional>
 
-#define MAX_PARTICLES 10000
+#define MAX_PARTICLES 2500
 
 using namespace cg::math;
 

@@ -17,6 +17,18 @@ namespace cg {
 			return display::window->key_up(key);
 		}
 		
+		bool mouse_press(cg::mouse key) {
+			return display::window->mouse_press((cg::core::Mouse) key);
+		}
+		
+		bool mouse_down(cg::mouse key) {
+			return display::window->mouse_down((cg::core::Mouse) key);
+		}
+		
+		bool mouse_up(cg::mouse key) {
+			return display::window->mouse_up((cg::core::Mouse) key);
+		}
+		
 		Vec2<i32> mouse_position() {
 			return display::window->mouse_pos();
 		}

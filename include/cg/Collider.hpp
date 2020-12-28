@@ -7,8 +7,6 @@
 namespace cg {
 	class Collider : public Component {
 	public:
-	
-	private:
 		virtual void _get_bounding_box(cg::physics::Rect2D &r) {};
 		
 	protected:

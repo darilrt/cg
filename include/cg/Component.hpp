@@ -16,6 +16,8 @@ namespace cg {
 		virtual void update() {};
 		virtual void render() {};
 		
+		virtual ~Component() {};
+		
 	private:
 	};
 }

@@ -17,11 +17,14 @@ namespace cg {
 		
 		BoxCollider2D(bool is_static=false);
 		BoxCollider2D(const Vec2<f32> position, const Vec2<f32> size, bool is_static=false);
+		~BoxCollider2D();
+		
+		bool collide(BoxCollider2D *box);
+		
+		void _get_bounding_box(cg::physics::Rect2D &r);
 		
 	private:
 		cg::physics::Rect2D rect;
-		
-		void _get_bounding_box(cg::physics::Rect2D &r);
 	};
 }
 
