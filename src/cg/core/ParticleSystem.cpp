@@ -11,14 +11,17 @@ namespace cg {
 			glGenBuffers(1, &particles_position_buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 			glBufferData(GL_ARRAY_BUFFER, MAX_PARTICLES * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			
 			glGenBuffers(1, &particles_color_buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 			glBufferData(GL_ARRAY_BUFFER, MAX_PARTICLES * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			
 			glGenBuffers(1, &particles_size_rot_buffer);
 			glBindBuffer(GL_ARRAY_BUFFER, particles_size_rot_buffer);
 			glBufferData(GL_ARRAY_BUFFER, MAX_PARTICLES * 2 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			
 			max = MAX_PARTICLES;
 			mesh = nullptr;
@@ -85,7 +88,7 @@ namespace cg {
 		}
 		
 		void ParticleSystem::render() {
-			std::sort(&particles[0], &particles[MAX_PARTICLES]);
+			std::sort(&particles[0], &particles[max]);
 			
 			material->use();
 			

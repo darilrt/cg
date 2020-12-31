@@ -52,7 +52,7 @@ namespace cg {
 			
 			void viewport(i32 x, i32 y, i32 width, i32 height);
 			void ortho2d();
-			void clear();
+			void clear(bool depth=true);
 			void depth_test(bool enable);
 			
 			bool update();

@@ -36,33 +36,6 @@ namespace cg {
 		// Uniforms
 
 		template<typename T>
-		class Uniform1 : public Uniform {
-		private:
-			void _uniform_call(int value) {
-				glUniform1i(this->material->shader->uniforms[this->name], this->value);
-			}
-			
-			void _uniform_call(float value) {
-				glUniform1f(this->material->shader->uniforms[this->name], this->value);
-			}
-			
-			void _uniform_call(unsigned int value) {
-				glUniform1ui(this->material->shader->uniforms[this->name], this->value);
-			}
-
-		public:
-			T value;
-			
-			Uniform1(T value) {
-				this->value = value;
-			}
-			
-			void use() {
-				_uniform_call(this->value);
-			}
-		};
-
-		template<typename T>
 		class Uniform1v : public Uniform {
 		private:
 			void _uniform_call(int value) {
@@ -143,6 +116,61 @@ namespace cg {
 
 			Sampler2D(unsigned int value=0);
 			void use() override;
+		};
+		
+		template<typename T>
+		class Uniform1 : public Uniform {
+		private:
+			void _uniform_call(int value) {
+				glUniform1i(this->material->shader->uniforms[this->name], this->value);
+			}
+			
+			void _uniform_call(float value) {
+				glUniform1f(this->material->shader->uniforms[this->name], this->value);
+			}
+			
+			void _uniform_call(unsigned int value) {
+				glUniform1ui(this->material->shader->uniforms[this->name], this->value);
+			}
+
+		public:
+			T value;
+			
+			Uniform1(T value) {
+				this->value = value;
+			}
+			
+			void use() {
+				_uniform_call(this->value);
+			}
+		};
+		
+		template<typename T>
+		class Uniform2 : public Uniform {
+		private:
+			void _uniform_call(int v1, int v2) {
+				glUniform2i(this->material->shader->uniforms[this->name], v1, v2);
+			}
+			
+			void _uniform_call(float v1, float v2) {
+				glUniform2f(this->material->shader->uniforms[this->name], v1, v2);
+			}
+			
+			void _uniform_call(unsigned int v1, unsigned int v2) {
+				glUniform2ui(this->material->shader->uniforms[this->name], v1, v2);
+			}
+
+		public:
+			T a, b;
+			
+			Uniform2(T v1, T v2) {
+				this->a = v1;
+				this->b = v2;
+			}
+			
+			void use() {
+				_uniform_call(a, b);
+			}
 		};
 	}
 }

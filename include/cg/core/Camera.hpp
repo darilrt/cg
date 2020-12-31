@@ -3,9 +3,12 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
-
-#include "../math.hpp"
+#include "Shader.hpp"
+#include "Material.hpp"
+#include "MeshRenderer.hpp"
 #include "Window.hpp"
+#include "../math.hpp"
+#include "../Texture.hpp"
 
 using namespace cg::math;
 
@@ -19,12 +22,16 @@ namespace cg {
 			
 			Camera2D(Window* window);
 			
-			void use();
+			void begin();
+			void end();
 			Vec2<f32> screen_to_world(Vec2<i32> pos);
 			
 			inline void depth_test(bool enable) {
 				window->depth_test(enable);
 			}
+			
+			cg::Texture texture;
+			u32 fbo, rbo;
 		};
 	}
 }

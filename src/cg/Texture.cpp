@@ -10,14 +10,21 @@
 using namespace cg::math;
 
 namespace cg {
-	Texture::Texture() {}
-	
-	Texture::~Texture() {
-		glDeleteTextures(1, &texture);
+	Texture::Texture(Vec2<f32> s) {
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, s.x, s.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
+		this->size = s;
 	}
-
+	
 	Texture::Texture(const std::string file_path) {
-		GLuint tex;
 		GLuint format;
 		
 		int w, h, n;
@@ -35,24 +42,29 @@ namespace cg {
 			case 4: format = GL_RGBA; break;
 		}
 
-		glGenTextures(1, &tex);
-		glBindTexture(GL_TEXTURE_2D, tex);
-
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		
 		glTexImage2D(GL_TEXTURE_2D, 0, n, w, h, 0, format, GL_UNSIGNED_BYTE, image);
-
+		
 		glBindTexture(GL_TEXTURE_2D, 0);
 		
 		delete image;
 
-		this->texture = tex;
 		this->size.x = w;
 		this->size.y = h;
 	}
 
+	Texture::~Texture() {
+		glDeleteTextures(1, &texture);
+	}
+	
 	Texture* Texture::load(const std::string file_path) {
 		return new Texture(file_path);
 	}

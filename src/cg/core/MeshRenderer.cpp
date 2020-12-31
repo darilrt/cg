@@ -42,7 +42,6 @@ namespace cg {
 			glRotatef(this->rotation.z, 0, 0, 1);
 			
 			glScalef(this->scale.x, this->scale.y, this->scale.z);
-			glColor4f(1, 1, 1, 1);
 
 			this->material->use();
 			
@@ -58,13 +57,12 @@ namespace cg {
 			
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->_ebo);
 			glDrawElements(GL_TRIANGLES, mesh->elements.size() * 3, GL_UNSIGNED_INT, 0);
-
+			
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			glDisableVertexAttribArray(0);
-
-			glPopMatrix();
 			
 			glUseProgram(0);
+
+			glPopMatrix();
 		}
 	}
 }

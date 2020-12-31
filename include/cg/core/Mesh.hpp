@@ -12,13 +12,12 @@ namespace cg {
 	
 	namespace core {
 		class Mesh {
-		private:
+		public:
 			unsigned int _vbo, // Vertex Buffer
 						 _tbo, // Texture Buffer
 						 _vao, // Vertex Array
 						 _ebo; // Element Buffer
 			
-		public:
 			std::vector<Vec3<float>> vertex;
 			std::vector<Vec2<float>> uv;
 			std::vector<Vec3<unsigned int>> elements;

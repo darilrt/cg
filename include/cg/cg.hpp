@@ -17,6 +17,8 @@
 #include "display.hpp"
 #include "debug.hpp"
 #include "shader.hpp"
+#include "material.hpp"
+#include "mesh.hpp"
 #include "random.hpp"
 #include "physics.hpp"
 

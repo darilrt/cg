@@ -12,9 +12,10 @@ namespace cg {
 		u32 texture;
 		Vec2<float> size;
 		
-		Texture();
-		~Texture();
+		Texture(Vec2<f32> size);
 		Texture(const std::string file_path);
+		
+		~Texture();
 		
 		static Texture* load(const std::string file_path);
 	};

@@ -6,6 +6,9 @@
 #include "cg/core/Shader.hpp"
 #include "cg/core/Material.hpp"
 
+cg::core::Sampler2D *particle_material_texture;
+cg::core::Uniform1i *particle_material_use_texture;
+
 namespace cg {
 	ParticleEmitter::ParticleEmitter() {
 		particle = new cg::core::ParticleSystem();
@@ -19,8 +22,6 @@ namespace cg {
 	}
 
 	ParticleEmitter::~ParticleEmitter() {
-		delete particle->material;
-		delete particle->mesh;
 		delete particle;
 	}
 	
@@ -34,6 +35,25 @@ namespace cg {
 				);
 				particle->shader->add_uniform("texture");
 				particle->shader->add_uniform("use_texture");
+			}
+			
+			if (particle->material == nullptr) {
+				if ((particle->material = cg::material::get("particle")) == nullptr) {
+					particle->material = cg::material::add("particle", particle->shader);
+					
+					particle_material_texture = new cg::core::Sampler2D(0);
+					particle_material_use_texture = new cg::core::Uniform1i(0);
+					
+					particle->material->set_uniform(
+						"texture",
+						particle_material_texture
+					);
+					
+					particle->material->set_uniform(
+						"use_texture",
+						particle_material_use_texture
+					);
+				}
 			}
 		}
 		
@@ -54,28 +74,30 @@ namespace cg {
 		}
 		
 		if (particle->mesh == nullptr) {
-			particle->mesh = new cg::core::Mesh();
-			
-			particle->mesh->vertex = {
-				{-0.5, -0.5, 0},
-				{-0.5,  0.5, 0},
-				{ 0.5,  0.5, 0},
-				{ 0.5, -0.5, 0},
-			};
-			
-			particle->mesh->uv = {
-				{0, 1},
-				{0, 0},
-				{1, 0},
-				{1, 1},
-			};
-			
-			particle->mesh->elements = {
-				{2, 1, 0},
-				{0, 3, 2},
-			};
-			
-			particle->mesh->bind();
+			if ((particle->mesh = cg::mesh::get("sprite")) == nullptr) {
+				particle->mesh = cg::mesh::add("sprite");
+				
+				particle->mesh->vertex = {
+					{-0.5, -0.5, 0},
+					{-0.5,  0.5, 0},
+					{ 0.5,  0.5, 0},
+					{ 0.5, -0.5, 0},
+				};
+				
+				particle->mesh->uv = {
+					{0, 1},
+					{0, 0},
+					{1, 0},
+					{1, 1},
+				};
+				
+				particle->mesh->elements = {
+					{2, 1, 0},
+					{0, 3, 2},
+				};
+				
+				particle->mesh->bind();
+			}
 		}
 	}
 	
@@ -88,6 +110,14 @@ namespace cg {
 	}
 	
 	void ParticleEmitter::render() {
+		if (texture) {
+			particle_material_texture->value = texture->texture;
+			particle_material_use_texture->value = 1;
+		}
+		else {
+			particle_material_use_texture->value = 0;
+		}
+		
 		glPushMatrix();
 		
 		if (!is_global) {

@@ -3,7 +3,14 @@
 
 #include "cg/components/Sprite.hpp"
 
+cg::core::Sampler2D* material_texture = nullptr;
+
 namespace cg {
+	cg::core::Mesh *Sprite::mesh = nullptr;
+	cg::core::Shader *Sprite::shader = nullptr;
+	cg::core::Material *Sprite::material = nullptr;
+	cg::core::MeshRenderer *Sprite::mesh_renderer = nullptr;
+	
 	Sprite::Sprite() {}
 	
 	Sprite::Sprite(const std::string texture_path) {
@@ -19,61 +26,67 @@ namespace cg {
 	}
 
 	Sprite::~Sprite() {
-		if (texture_d) delete texture;;
-		delete material;
-		delete mesh_renderer->mesh;
-		delete mesh_renderer;
+		if (texture_d) delete texture;
 	}
 	
 	void Sprite::start() {
-		if (shader == nullptr) {
-			if ((shader = cg::shader::get("standar")) == nullptr) {
-				shader = cg::shader::load(
+		if (Sprite::shader == nullptr) {
+			if ((Sprite::shader = cg::shader::get("standar")) == nullptr) {
+				Sprite::shader = cg::shader::load(
 					"standar",
 					"assets/shaders/standar.vert",
 					"assets/shaders/standar.frag"
 				);
-				shader->add_uniform("texture");
+				Sprite::shader->add_uniform("texture");
 			}
 		}
 		
-		if (material == nullptr) {
-			material = new cg::core::Material(shader);
-			material->set_uniform(
-				"texture",
-				new cg::core::Sampler2D(texture->texture)
-			);
+		if (Sprite::material == nullptr) {
+			if ((Sprite::material = cg::material::get("standar")) == nullptr) {
+				Sprite::material = cg::material::add("standar", shader);
+				
+				material_texture = new cg::core::Sampler2D(0);
+				
+				Sprite::material->set_uniform(
+					"texture",
+					material_texture
+				);
+			}
 		}
 	
-		if (mesh_renderer == nullptr) {
-			cg::core::Mesh *mesh = new cg::core::Mesh();
+		if (Sprite::mesh_renderer == nullptr) {
+			if ((Sprite::mesh = cg::mesh::get("sprite")) == nullptr) {
+				Sprite::mesh = cg::mesh::add("sprite");
+				
+				Sprite::mesh->vertex = {
+					{-0.5, -0.5, 0},
+					{-0.5,  0.5, 0},
+					{ 0.5,  0.5, 0},
+					{ 0.5, -0.5, 0},
+				};
+				
+				Sprite::mesh->uv = {
+					{0, 1},
+					{0, 0},
+					{1, 0},
+					{1, 1},
+				};
+				
+				Sprite::mesh->elements = {
+					{2, 1, 0},
+					{0, 3, 2},
+				};
+				
+				Sprite::mesh->bind();
+			}
 			
-			mesh->vertex = {
-				{-0.5, -0.5, 0},
-				{-0.5,  0.5, 0},
-				{ 0.5,  0.5, 0},
-				{ 0.5, -0.5, 0},
-			};
-			
-			mesh->uv = {
-				{0, 1},
-				{0, 0},
-				{1, 0},
-				{1, 1},
-			};
-			
-			mesh->elements = {
-				{2, 1, 0},
-				{0, 3, 2},
-			};
-			
-			mesh->bind();
-			
-			mesh_renderer = new cg::core::MeshRenderer(mesh, material);
+			Sprite::mesh_renderer = new cg::core::MeshRenderer(Sprite::mesh, Sprite::material);
 		}
 	}
 
 	void Sprite::render() {
+		material_texture->value = texture->texture;
+		
 		mesh_renderer->position = position;
 		
 		mesh_renderer->scale = {

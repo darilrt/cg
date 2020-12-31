@@ -29,22 +29,24 @@ namespace cg {
 			if (this->elements.size()) {
 				glBindBuffer(GL_ARRAY_BUFFER, this->_ebo);
 				glBufferData(GL_ARRAY_BUFFER, this->elements.size() * 12, &this->elements[0], GL_STATIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 			
 			// Texture buffer
 			if (this->uv.size()) {
 				glBindBuffer(GL_ARRAY_BUFFER, this->_tbo);
 				glBufferData(GL_ARRAY_BUFFER, this->uv.size() * 12, &this->uv[0], GL_STATIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 
 			// Vertex buffer
 			if (this->vertex.size()) {
 				glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
 				glBufferData(GL_ARRAY_BUFFER, this->vertex.size() * 12, &this->vertex[0], GL_STATIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 			
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
-			glEnableVertexAttribArray(0);
+			glBindVertexArray(0);
 		}
 	}
 }

@@ -10,12 +10,14 @@
 namespace cg {
 	class Sprite : public cg::Component {
 	public:
+		static cg::core::Mesh *mesh;
+		static cg::core::Shader *shader;
+		static cg::core::Material *material;
+		static cg::core::MeshRenderer *mesh_renderer;
+		
 		bool is_global;
 	
 		cg::Texture* texture;
-		cg::core::Shader *shader = nullptr;
-		cg::core::Material *material = nullptr;
-		cg::core::MeshRenderer *mesh_renderer = nullptr;
 		Vec3<f32> position = {0, 0, 0},
 				  rotation = {0, 0, 0},
 				  scale = {1, 1, 1};
