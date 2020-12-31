@@ -5,7 +5,7 @@ import sys
 import os
 
 # CC CONFIGURATION ------------------------
-CC = "\"C:/mingw64/bin/g++\""
+CC = "g++"
 
 OPTIONS = [
     "-I./include/",
