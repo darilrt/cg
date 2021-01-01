@@ -48,7 +48,8 @@ namespace cg {
 			Vec2<i32> mouse_rel();
 			Vec2<i32> mouse_wheel();
 			
-			void title(std::string title);
+			void title(const std::string title);
+			void icon(const std::string icon_path);
 			
 			void viewport(i32 x, i32 y, i32 width, i32 height);
 			void ortho2d();

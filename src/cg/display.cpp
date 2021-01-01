@@ -44,6 +44,13 @@ namespace cg {
 			window->color = color;
 		}
 		
-		void icon(const std::string icon_path) {}
+		void icon(const std::string icon_path) {
+			// Check window was intialized ---------------------
+			if (window == nullptr) {
+				init({800, 600});
+			}
+			
+			cg::display::window->icon(icon_path);
+		}
 	}
 }

@@ -1,8 +1,9 @@
 #ifndef CG_CORE_TEXTURE_H
 #define CG_CORE_TEXTURE_H
 
-#include "math.hpp"
 #include <iostream>
+
+#include "math.hpp"
 
 using namespace cg::math;
 

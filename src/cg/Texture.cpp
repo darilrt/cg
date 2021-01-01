@@ -4,6 +4,7 @@
 #include "cg/math.hpp"
 #include "cg/Texture.hpp"
 
+#define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
 #include <vendor/stb_image.h>
 

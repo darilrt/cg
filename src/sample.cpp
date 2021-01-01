@@ -14,6 +14,7 @@ private:
 i32 main(i32 argc, i8* argv[]) {
 	cg::display::init(Vec2<i32>(800, 600));
 	cg::display::title("CG Sample");
+	cg::display::icon("assets/icon.png");
 	
 	cg::run(new SampleScene());
 	return 0;
