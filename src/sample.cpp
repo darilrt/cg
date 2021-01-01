@@ -1,14 +1,19 @@
 #include "cg/cg.hpp"
 
 class SampleScene : public cg::Scene {
-public:
+public:	
 	void start() {
+		canvas = cg::instantiate<cg::gui::Canvas>();
 	}
 	
 	void update() {
 	}
 	
+	void render() {
+	}
+	
 private:
+	cg::gui::Canvas *canvas;
 };
 
 i32 main(i32 argc, i8* argv[]) {

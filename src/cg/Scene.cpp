@@ -3,7 +3,7 @@
 
 namespace cg {
 	Scene::Scene() {
-		camera = new cg::core::Camera2D(cg::display::window);
+		camera = new cg::core::Camera(cg::display::window);
 		camera->position = {0, 0};
 	}
 	

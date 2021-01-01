@@ -6,10 +6,14 @@
 
 namespace cg {
 	namespace core {
-		Camera2D::Camera2D(Window* window) : texture(window->size) {
-			this->rotation = 0;
-			this->position = {0, 0};
-			this->window = window;
+		Camera::Camera(Window* w) : texture(w->size) {
+			perspective = false;
+			window = w;
+			position = 0;
+			rotation = 0;
+			fovy = 45;
+			z_near = -1000;
+			z_far = 1000;
 			
 			glGenFramebuffers(1, &fbo);
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -18,7 +22,7 @@ namespace cg {
 			
 			glGenRenderbuffers(1, &rbo);
 			glBindRenderbuffer(GL_RENDERBUFFER, rbo); 
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, window->size.x, window->size.y);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w->size.x, w->size.y);
 			glBindRenderbuffer(GL_RENDERBUFFER, 0);
 			
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
@@ -28,16 +32,22 @@ namespace cg {
 			
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
-
-		void Camera2D::begin() {
+		
+		void Camera::begin() {
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 			this->window->clear();
 			
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
 			
-			Vec2<int> n_size = this->window->size / 2;
-			glOrtho(-n_size.x, n_size.x, -n_size.y, n_size.y, -1000, 1000);
+			if (perspective) {
+				f32 aspect = ((f32) window->size.x) / ((f32) window->size.y);
+				gluPerspective(fovy, aspect, z_near, z_far);
+			}
+			else {
+				Vec2<int> n_size = this->window->size / 2;
+				glOrtho(-n_size.x, n_size.x, -n_size.y, n_size.y, z_near, z_far);
+			}
 			
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
@@ -51,26 +61,29 @@ namespace cg {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			
 			glPushMatrix();
+			glRotated(this->rotation.x, 1, 0, 0);
+			glRotated(this->rotation.y, 0, 1, 0);
+			glRotated(this->rotation.z, 0, 0, 1);
 			
-			glRotated(this->rotation, 0, 0, 1);
-			glTranslated(-this->position.x, -this->position.y, 0);
+			glTranslated(-this->position.x, -this->position.y, this->position.z);
 		}
 		
-		void Camera2D::end() {
+		void Camera::end() {
 			glPopMatrix();
 			
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			
 			glDisable(GL_DEPTH_TEST);
 		}
 
-		Vec2<f32> Camera2D::screen_to_world(Vec2<i32> pos) {
-			Vec2<int> n_size = this->window->size / 2;
+		Vec3<f32> Camera::screen2d_to_world(Vec3<i32> pos) {
+			Vec3<int> n_size(this->window->size / 2, 0);
 			
-			return Vec2<f32>(
+			return Vec3<f32>(
 				pos.x + this->position.x - n_size.x,
-				-(pos.y - this->position.y - n_size.y)
+				-(pos.y - this->position.y - n_size.y),
+				0
 			);
 		}
+		
 	}
 }

@@ -141,6 +141,14 @@ void cg::run(cg::Scene *scene) {
 		scene->camera->end();
 		
 		cg::display::window->clear();
+		
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		Vec2<int> n_size = cg::display::window->size / 2;
+		glOrtho(-n_size.x, n_size.x, -n_size.y, n_size.y, -1, 1);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		
 		mesh_renderer.render();
 	}
 }

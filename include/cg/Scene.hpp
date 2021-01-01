@@ -11,7 +11,7 @@
 namespace cg {
 	class Scene {
 	public:
-		cg::core::Camera2D *camera;
+		cg::core::Camera *camera;
 		
 		virtual void start() {};
 		virtual void update() {};

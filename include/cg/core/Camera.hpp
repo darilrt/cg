@@ -14,23 +14,28 @@ using namespace cg::math;
 
 namespace cg {
 	namespace core {
-		class Camera2D {
+		class Camera {
 		public:
-			Window* window;
-			Vec2<f32> position;
-			f32 rotation;
+			bool perspective;
+			f32 fovy, z_near, z_far;
 			
-			Camera2D(Window* window);
+			Vec3<f32> position;
+			Vec3<f32> rotation;
+			
+			Camera(Window* window);
 			
 			void begin();
 			void end();
-			Vec2<f32> screen_to_world(Vec2<i32> pos);
+			Vec3<f32> screen2d_to_world(Vec3<i32> pos);
 			
 			inline void depth_test(bool enable) {
 				window->depth_test(enable);
 			}
 			
 			cg::Texture texture;
+		
+		private:
+			Window* window;
 			u32 fbo, rbo;
 		};
 	}

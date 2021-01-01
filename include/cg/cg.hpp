@@ -1,7 +1,7 @@
 #ifndef CG_H
 #define CG_H
 
-// include engine core
+// Engine core
 #include "core/Window.hpp"
 #include "core/Material.hpp" 
 #include "core/Shader.hpp"
@@ -11,7 +11,7 @@
 #include "core/ParticleSystem.hpp"
 // #include "core/socket.hpp" temporalmente no
 
-// namespaces
+// Namespaces
 #include "math.hpp"
 #include "time.hpp"
 #include "display.hpp"
@@ -22,21 +22,24 @@
 #include "random.hpp"
 #include "physics.hpp"
 
-// enums
+// Enums
 #include "key_code.hpp"
 #include "mouse.hpp"
 
-// classes
+// Classes
 #include "Texture.hpp"
 #include "GameObject.hpp"
 #include "Component.hpp"
 #include "Scene.hpp"
 
-// components
+// Components
 #include "components/Sprite.hpp"
 #include "components/ParticleEmitter.hpp"
 #include "components/BoxCollider2D.hpp"
 #include "components/CircleCollider.hpp"
+#include "components/gui/Canvas.hpp"
+
+// GUI Components
 
 #include <algorithm>
 
