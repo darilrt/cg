@@ -124,6 +124,7 @@ void cg::run(cg::Scene *scene) {
 		// Render ------------------------------------------
 		glViewport(0, 0, cg::display::window->size.x, cg::display::window->size.y);
 		scene->camera->begin();
+		glRotatef(cg::time::life_time * 180, 1, 1, 1);
 		
 		for (cg::GameObject* obj : scene->game_objects) {
 			for (cg::Component* cmp : obj->components) {

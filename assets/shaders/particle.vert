@@ -37,7 +37,7 @@ void main() {
 	
 	vec4 vertex = vertex_position * rotationZ(size_rot.y);
 	vertex.xyz *= size_rot.x;
-	vertex += vec4(position.xyz, 0);
 	
-	gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * vertex;
+	gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * vec4(position.xyz, 1);
+	gl_Position += gl_ProjectionMatrix * vertex;
 }
