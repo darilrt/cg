@@ -1,11 +1,17 @@
 #ifndef CG_SPRITE_H
 #define CG_SPRITE_H
 
-#include "../cg.hpp"
-
 #include "../core/Material.hpp" 
 #include "../core/Shader.hpp"
 #include "../core/MeshRenderer.hpp"
+#include "../Texture.hpp"
+#include "../Component.hpp"
+#include "../shader.hpp"
+#include "../material.hpp"
+#include "../mesh.hpp"
+#include "../math.hpp"
+
+using namespace cg::math;
 
 namespace cg {
 	class Sprite : public cg::Component {
